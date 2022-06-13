@@ -9,22 +9,19 @@ while [ true ]; do
     # check if disk is mounted
     ls -d /dev/sdc1 >> /dev/null
     if [ $? -eq 0 ]; then
-        usb_path=$(findmnt /dev/sdc1 | tail -1 | cut -d ' ' -f1)
+        usb_path=$(findmnt /dev/sdc1 | tail -1 | cut -d '/' -f1-4)
         
         echo 'copying file(s) ...'
         cp "$file_path" "$usb_path"
         if [ $? -eq 0 ]; then
-           spd-say 'Finished copying, insert usb'
-          echo 'Finished copying.'
-          sleep 10s
+            echo "$(tput setaf 2)Finished copying."
+            sleep 10s
         else
-           echo 'Could not copy files. Please check your drive'
-           spd-say 'Error occured.'
-           sleep 10s
+            echo "$(tput setaf 1)Could not copy files. Please check your drive"
+            sleep 10s
         fi        
     else 
-        echo 'Please insert a USB drive'
-        spd-say 'Insert USB.'
+        echo "$(tput setaf 1)Please insert a USB drive"
         sleep 2s
     fi
    
